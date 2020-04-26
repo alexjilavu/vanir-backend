@@ -20,11 +20,6 @@ public class VanirApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VanirApplication.class, args);
 	}
-
-	@Autowired
-	   public void setDao(UserRepository daoToSet) {
-		userRepository = daoToSet;
-	   }
 	
 	@Bean
     public CommandLineRunner run(UserRepository userRepository) throws Exception {
