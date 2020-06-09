@@ -39,7 +39,6 @@ public class Account implements Serializable {
 	@Column(name="BALANCE")
 	protected Integer balance;
 	
-	@OneToMany(cascade= {}, fetch=FetchType.EAGER)
 	@JoinColumn(name="CURRENCY_ID", nullable=false, updatable=true, insertable=true)
 	protected Currency currency;
 	

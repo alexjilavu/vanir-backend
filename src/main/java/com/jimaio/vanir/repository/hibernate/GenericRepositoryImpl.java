@@ -10,7 +10,6 @@ import com.jimaio.vanir.repository.AbstractHibernateDao;
 import com.jimaio.vanir.repository.GenericRepository;
 
 @Repository
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class GenericRepositoryImpl <T extends Serializable> extends AbstractHibernateDao<T>
 	implements GenericRepository<T> {
 

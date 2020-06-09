@@ -33,7 +33,6 @@ public class Transaction implements Serializable {
 	@Column(name="AMOUNT")
 	protected Integer amount;
 	
-	@OneToMany(cascade= {}, fetch=FetchType.EAGER)
 	@JoinColumn(name="CURRENCY_ID", nullable=false, updatable=true, insertable=true)
 	protected Currency currency;
 	
