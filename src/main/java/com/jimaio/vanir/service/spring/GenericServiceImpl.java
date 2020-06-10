@@ -8,11 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jimaio.vanir.repository.GenericRepository;
 import com.jimaio.vanir.service.GenericService;
 
-@Transactional(readOnly = true)
+@Transactional
 public abstract class GenericServiceImpl<T extends Serializable> implements GenericService<T>{
 
 	protected volatile GenericRepository<T> genericRepository;
-
 	
 	public T getItem(final long id) {
 		return genericRepository.findOne(id);
@@ -36,6 +35,10 @@ public abstract class GenericServiceImpl<T extends Serializable> implements Gene
 
 	public void deleteById(long entityId) {
 		genericRepository.deleteById(entityId);
+	}
+	
+	public void setRepository(GenericRepository<T> repository) {
+		this.genericRepository = repository;
 	}
 	
 }

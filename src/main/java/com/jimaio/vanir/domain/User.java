@@ -24,11 +24,14 @@ public class User implements Serializable {
 	@Column(name="ID")
 	protected Long id;
 	
-	@Column(name="FIREBASE_ID")
-	protected String firebaseId;
-	
 	@Column(name="NAME")
 	protected String name;
+	
+	@Column(name = "EMAIL")
+	protected String email;
+	
+	@Column(name = "PASSWORD")
+	protected String password;
 	
 	@Column(name="PHONE_NUMBER")
 	protected String phoneNumber;
@@ -38,6 +41,9 @@ public class User implements Serializable {
 	
 	@Column(name="ADDRESS")
 	protected String address;
+	
+	@Column(name="API_KEY")
+	protected String apiKey;
 	
 	public User() {
 		this.id = 0L;

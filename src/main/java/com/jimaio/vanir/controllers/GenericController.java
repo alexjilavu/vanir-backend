@@ -10,11 +10,9 @@ public abstract class GenericController<T extends Serializable> implements Seria
     private static final long serialVersionUID = -4903440076552953219L;
 
     protected GenericService<T> service;
-    protected Class<T> c;
 
-    public GenericController(Class<T> c, GenericService<T> service) {
+    public GenericController(GenericService<T> service) {
         this.service = service;
-        this.c = c;
     }
 
     public List<T> listItems() {
@@ -52,10 +50,10 @@ public abstract class GenericController<T extends Serializable> implements Seria
         		service.update(item);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return "Obiectul de tipul " + c.getName() + " nu a putut fi salvat.";
+            return "Obiectul de tipul " + item.getClass().getName() + " nu a putut fi salvat.";
         }
 
-        return "Obiectul de tipul " + c.getName() + " a fost salvat.";
+        return "Obiectul de tipul " + item.getClass().getName() + " a fost salvat.";
     }
 
     public String deleteItem(Integer id) {
@@ -64,10 +62,10 @@ public abstract class GenericController<T extends Serializable> implements Seria
             service.delete(item);
         } catch (Exception ex) {
             ex.printStackTrace();
-            return "There was a problem deleting the item with id " + id + " of class " + c.getName();
+            return "There was a problem deleting the item with id " + id + " of class " + item.getClass().getName();
         }
 
-        return "Item with id " + id + " of class " + c.getName() + " was deleted.";
+        return "Item with id " + id + " of class " + item.getClass().getName() + " was deleted.";
     }
 
     protected abstract T getEmptyItem();
