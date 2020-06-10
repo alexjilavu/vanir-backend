@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -31,6 +34,7 @@ public class Card implements Serializable {
 	
 	@ManyToOne(cascade={}, fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name="ACCOUNT_ID", nullable=false, updatable=false, insertable=true)
+	@JsonIgnore
 	protected Account account;
 	
 	@Column(name="CARD_NUMBER")

@@ -12,7 +12,11 @@ import com.jimaio.vanir.service.CurrencyService;
 @Transactional
 public class CurrencyServiceImpl extends GenericServiceImpl<Currency> implements CurrencyService{
 
-	@Autowired
 	CurrencyRepository currencyRepository; 
 
+	@Autowired
+	public CurrencyServiceImpl(CurrencyRepository currencyRepository) {
+		super.setRepository(currencyRepository);
+		this.currencyRepository = currencyRepository;
+	}
 }

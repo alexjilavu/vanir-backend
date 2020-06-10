@@ -33,15 +33,21 @@ public class UsersController extends GenericController<User>{
 	
 	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public void register(@RequestBody RegisterForm registerForm) {
+	public boolean register(@RequestBody RegisterForm registerForm) {
 		
+		if (!registerForm.getPassword().equals(registerForm.getConfirmPassword()))
+			return false;
+			
 		User user = getEmptyItem();
 		user.setEmail(registerForm.getEmail());
+		user.setName(registerForm.getFullName());
 		user.setPassword(registerForm.getPassword());
 		user.setPhoneNumber(registerForm.getPhoneNumber());
 		user.setApiKey(UUID.randomUUID().toString());
 		
-		saveItem(user);
+		userService.createUser(user);
+		
+		return true;
 	}
 	
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,16 +65,21 @@ public class UsersController extends GenericController<User>{
 		return apiKey;
 	}
 
-	@GetMapping(value = "/get")
+	@GetMapping(value = "/getAll")
 	@ResponseBody
 	public List<User> list() {
 		return userService.getItems();
 	}
 	
-	@GetMapping(value = "/get/{id}")
+	@GetMapping(value = "/get")
 	@ResponseBody
 	public User getUser(@RequestParam(name = "id", required = true) Integer id) {
 		return userService.getItem(id);
+	}
+	
+	@PostMapping(value = "/delete")
+	public void deleteUser(@RequestParam(name = "id", required = true) Integer id) {
+		userService.deleteById(id);
 	}
 	
 	@Override

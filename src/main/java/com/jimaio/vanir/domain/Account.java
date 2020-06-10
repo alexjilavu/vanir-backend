@@ -17,6 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -46,13 +49,15 @@ public class Account implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date creationDate;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="account", targetEntity=Card.class, orphanRemoval=true)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="account", targetEntity=Card.class, orphanRemoval=true)
 	protected List<Card> cards;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="recipientAccount", targetEntity=Transaction.class)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="recipientAccount", targetEntity=Transaction.class)
+	@Transient
 	protected List<Transaction> receivedTransactions;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="senderAccount", targetEntity=Transaction.class)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="senderAccount", targetEntity=Transaction.class)
+	@Transient
 	protected List<Transaction> sentTransactions;
 	
 	public Account() {

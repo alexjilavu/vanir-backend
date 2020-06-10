@@ -46,4 +46,18 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<User> implements U
 			return null;
 		}
 	}
+	
+	public User getByApiKey(String apiKey) {
+		if (cb == null)
+			cb = sessionFactory.getCriteriaBuilder();
+		CriteriaQuery<User> crit = cb.createQuery(clazz);
+		Root<User> root = crit.from(clazz);
+		crit.where(cb.equal(root.get("apiKey"), apiKey));
+		TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(crit);
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
 }

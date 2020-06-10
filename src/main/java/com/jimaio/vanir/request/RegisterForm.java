@@ -9,5 +9,9 @@ public class RegisterForm {
 	
 	private String password;
 	
+	private String confirmPassword;
+	
 	private String phoneNumber; 
+	
+	private String fullName;
 }
