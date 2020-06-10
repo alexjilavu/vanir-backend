@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +30,7 @@ public class Transaction implements Serializable {
 	protected Long id;
 	
 	@Column(name="AMOUNT")
-	protected Integer amount;
+	protected Double amount;
 	
 	@JoinColumn(name="CURRENCY_ID", nullable=false, updatable=true, insertable=true)
 	protected Currency currency;

@@ -25,18 +25,18 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 	}
 
 	@Override
-	public String checkCredentials(String email, String password) {
+	public User checkCredentials(String email, String password) {
 		User user = userRepository.getByCredentials(email, password);
-		if (user != null && user.getApiKey() != null)
-			return user.getApiKey();
+		if (user != null)
+			return user;
 		return null;
 	}
 
 	@Override
-	public String checkCredentials(String phoneNumber) {
+	public User checkCredentials(String phoneNumber) {
 		User user = userRepository.getByPhoneNumber(phoneNumber);
-		if (user != null && user.getApiKey() != null)
-			return user.getApiKey();
+		if (user != null)
+			return user;
 		return null;
 	}
 

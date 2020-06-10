@@ -52,17 +52,17 @@ public class UsersController extends GenericController<User>{
 	
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String login(@RequestBody LoginForm loginForm) {
+	public Long login(@RequestBody LoginForm loginForm) {
 		
-		String apiKey = null;
+		User user = null;
 		
 		if (loginForm.getEmail() != null && loginForm.getPassword() != null)
-			apiKey = userService.checkCredentials(loginForm.getEmail(), loginForm.getPassword());
+			user = userService.checkCredentials(loginForm.getEmail(), loginForm.getPassword());
 		else
 			if (loginForm.getPhoneNumber() != null)
-				apiKey = userService.checkCredentials(loginForm.getPhoneNumber());
+				user = userService.checkCredentials(loginForm.getPhoneNumber());
 		
-		return apiKey;
+		return user.getId();
 	}
 
 	@GetMapping(value = "/getAll")

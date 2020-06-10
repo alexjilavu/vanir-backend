@@ -3,7 +3,6 @@ package com.jimaio.vanir.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jimaio.vanir.domain.Account;
@@ -27,8 +26,8 @@ public class AccountsController extends GenericController<Account> {
 	}
 	
 	@GetMapping("/account")
-	public Account getAccount(@RequestHeader("apiKey") String key) {
-		User user = userService.getByApiKey(key);
+	public Account getAccount(@RequestHeader("userId") Integer id) {
+		User user = userService.getItem(id);
 		if (user == null)
 			return null;
 		

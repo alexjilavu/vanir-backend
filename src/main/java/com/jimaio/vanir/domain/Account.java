@@ -19,8 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 
 @Entity
@@ -40,7 +38,7 @@ public class Account implements Serializable {
 	protected User user;
 	
 	@Column(name="BALANCE")
-	protected Integer balance;
+	protected Double balance;
 	
 	@JoinColumn(name="CURRENCY_ID", nullable=false, updatable=true, insertable=true)
 	protected Currency currency;

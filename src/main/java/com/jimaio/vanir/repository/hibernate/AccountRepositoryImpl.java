@@ -17,6 +17,7 @@ public class AccountRepositoryImpl extends GenericRepositoryImpl<Account> implem
 		super.setClazz(Account.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Account getAccountByUser(User user) {
 		Session session = sessionFactory.getCurrentSession();
 		Query<Account> query = session.createQuery("select a from Account a where a.user.id = :userId").setParameter("userId", user.getId());
