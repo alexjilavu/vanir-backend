@@ -3,20 +3,26 @@ package com.jimaio.vanir.repository;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public abstract class AbstractHibernateDao<T extends Serializable> {
 	
-	private Class<T> clazz;
+	protected Class<T> clazz;
 	  
     @Autowired
-    SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
+    
+    protected CriteriaBuilder cb;
   
     public void setClazz(Class< T > clazzToSet){
-       this.clazz = clazzToSet;
+       this.clazz = clazzToSet; 
     }
   
     public T findOne(long id){

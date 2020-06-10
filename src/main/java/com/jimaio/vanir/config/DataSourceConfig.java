@@ -1,5 +1,7 @@
 package com.jimaio.vanir.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -46,14 +48,24 @@ public class DataSourceConfig {
         return dataSourceBuilder.build();
     }
 	
-	@Bean
+	@Bean(name = "entityManagerFactory")
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(getDataSource());
         sessionFactory.setPackagesToScan("com.jimaio.vanir.domain");
-        //sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.setHibernateProperties(hibernateProperties());
  
         return sessionFactory;
+    }
+	
+	private final Properties hibernateProperties() {
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty(
+                "hibernate.hbm2ddl.auto", "update");
+        hibernateProperties.setProperty(
+                "hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+
+        return hibernateProperties;
     }
 	
 	@Bean
