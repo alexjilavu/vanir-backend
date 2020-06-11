@@ -12,15 +12,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jimaio.vanir.domain.Account;
+import com.jimaio.vanir.domain.Transaction;
 import com.jimaio.vanir.domain.User;
 import com.jimaio.vanir.request.LoginForm;
 import com.jimaio.vanir.request.RegisterForm;
 import com.jimaio.vanir.response.AuthResponse;
+import com.jimaio.vanir.response.UserBalanceResponse;
+import com.jimaio.vanir.service.TransactionService;
 import com.jimaio.vanir.service.UserService;
 
 @RestController
@@ -30,6 +33,9 @@ public class UsersController extends GenericController<User>{
 	
 	@Autowired
 	public UserService userService;
+	
+	@Autowired
+	public TransactionService transactionService;
 
 	public UsersController(UserService service) {
 		super(service);
@@ -81,7 +87,7 @@ public class UsersController extends GenericController<User>{
 			}
 				
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		}
 		
@@ -106,7 +112,45 @@ public class UsersController extends GenericController<User>{
 		userService.delete(user);
 	}
 	
-	@GetMapping()
+	@GetMapping(value = "/users/balance")
+	public ResponseEntity<UserBalanceResponse> getBalance(@RequestHeader("id") String apiKey) {
+		try {
+			User user = userService.getByApiKey(apiKey);
+			Account account = user.getAccount();
+			
+			UserBalanceResponse response = new UserBalanceResponse(account);
+			return ResponseEntity.ok(response);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+	}
+	
+	@PostMapping(value = "/users/balance", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<Double> topup(@RequestHeader("id") String apiKey, 
+							 @RequestBody Double value) {
+		
+		User user = userService.getByApiKey(apiKey);
+		if (user == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
+		Double balance = null;
+		Transaction transaction = null;
+		try {
+			balance = user.getAccount().getBalance();
+			transaction = transactionService.topUpBalance(user.getId().intValue(), value);
+		} catch (Exception ex) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(balance);
+		}
+		
+		if (transaction == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(balance);
+		
+		user = userService.getItem(user.getId());
+		
+		return ResponseEntity.ok(user.getAccount().getBalance());
+	}
 	
 	@Override
 	protected User getEmptyItem() {
