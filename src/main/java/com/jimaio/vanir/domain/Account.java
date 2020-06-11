@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,7 +34,7 @@ public class Account implements Serializable {
 	@Column(name="ID")
 	protected Long id;
 	
-	@ManyToOne(cascade={}, fetch=FetchType.EAGER, optional=false)
+	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name="USER_ID", nullable=false, updatable=true, insertable=true)
 	protected User user;
 	
