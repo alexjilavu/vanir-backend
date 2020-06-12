@@ -5,6 +5,6 @@ import com.jimaio.vanir.domain.Card;
 
 public interface CardService extends GenericService<Card> {
 
-	public void createCard(Account account);
+	public Card createCard(Account account);
 	
 }

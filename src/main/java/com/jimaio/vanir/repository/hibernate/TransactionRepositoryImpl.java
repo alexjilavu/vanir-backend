@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jimaio.vanir.domain.Transaction;
+import com.jimaio.vanir.domain.User;
 import com.jimaio.vanir.repository.TransactionRepository;
 
 @Repository
@@ -20,10 +21,12 @@ public class TransactionRepositoryImpl extends GenericRepositoryImpl<Transaction
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Transaction> getTransactions(Integer limit) {
+	public List<Transaction> getTransactionsOfUser(User user) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Transaction> query = session.createQuery("SELECT t FROM Transaction t ORDER BY t.date DESC");
-		return query.setMaxResults(limit).list();
+		Query<Transaction> query = session.createQuery("SELECT t FROM Transaction t "
+				+ "WHERE t.recipientAccount.user.id = :userId OR t.senderAccount.user.id = :userId ORDER BY t.date DESC");
+		query.setParameter("userId", user.getId());
+		return query.list();
 	}
 
 }

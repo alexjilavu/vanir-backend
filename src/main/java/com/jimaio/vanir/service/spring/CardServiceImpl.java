@@ -11,6 +11,7 @@ import com.jimaio.vanir.domain.Account;
 import com.jimaio.vanir.domain.Card;
 import com.jimaio.vanir.repository.AccountRepository;
 import com.jimaio.vanir.repository.CardRepository;
+import com.jimaio.vanir.response.CardResponse;
 import com.jimaio.vanir.service.CardService;
 import com.jimaio.vanir.utils.Utils;
 
@@ -28,7 +29,7 @@ public class CardServiceImpl extends GenericServiceImpl<Card> implements CardSer
 	}
 
 	@Override
-	public void createCard(Account account) {
+	public Card createCard(Account account) {
 		Card card = new Card();
 		card.setCardNumber(Utils.generateRandomNumber(16));
 		card.setCcv(Utils.generateRandomNumber(3));
@@ -43,7 +44,7 @@ public class CardServiceImpl extends GenericServiceImpl<Card> implements CardSer
 		card.setPinCode(Utils.generateRandomNumber(4));
 		card.setAccount(account);
 		
-		create(card);
+		return create(card);
 	} 
 
 }

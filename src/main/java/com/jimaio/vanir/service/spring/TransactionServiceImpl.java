@@ -93,9 +93,8 @@ public class TransactionServiceImpl extends GenericServiceImpl<Transaction> impl
 		return null;
 	}
 
-	@Override
-	public List<Transaction> getItems(Integer limit) {
-		return transactionRepository.getTransactions(limit);
-	} 
+	public List<Transaction> getTransactionsOfUser(User user) {
+		return transactionRepository.getTransactionsOfUser(user);
+	}
  
 }
