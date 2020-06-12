@@ -51,6 +51,9 @@ public class User implements Serializable {
 	@Column(name="API_KEY")
 	protected String apiKey;
 	
+	@Column(name="AVATAR_URL", length = 700)
+	protected String avatarUrl;
+	
 	@JsonIgnore
 	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="user", targetEntity=Account.class)
 	public Account account;

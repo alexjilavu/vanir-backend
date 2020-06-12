@@ -29,12 +29,6 @@ public class APIKeyAuthFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		Enumeration<String> headerNames = httpRequest.getHeaderNames();
 		
-		if (headerNames != null) {
-			while (headerNames.hasMoreElements()) {
-                System.out.println("Header: " + httpRequest.getHeader(headerNames.nextElement()));
-			}
-		}
-		
 		chain.doFilter(httpRequest, response);
 	}
  

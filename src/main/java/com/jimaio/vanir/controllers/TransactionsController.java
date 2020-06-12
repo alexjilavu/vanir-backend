@@ -61,14 +61,19 @@ public class TransactionsController extends GenericController<Transaction> {
 			if (transaction.getSenderAccount().equals(transaction.getRecipientAccount())) {
 				response.setRecipientName("Topup");
 				response.setAmount(transaction.getAmount());
+				response.setRecipientAvatar(user.getAvatarUrl());
 			} else
 				if (transaction.getSenderAccount().getUser().getId().equals(user.getId())) {
-					response.setRecipientName(transaction.getRecipientAccount().getUser().getName());
+					User recipient = transaction.getRecipientAccount().getUser();
+					response.setRecipientName(recipient.getName());
 					response.setAmount(-transaction.getAmount());
+					response.setRecipientAvatar(recipient.getAvatarUrl());
 				} else
 					if (transaction.getRecipientAccount().getUser().getId().equals(user.getId())) {
-						response.setRecipientName(transaction.getSenderAccount().getUser().getName());
+						User sender = transaction.getSenderAccount().getUser();
+						response.setRecipientName(sender.getName());
 						response.setAmount(transaction.getAmount());
+						response.setRecipientAvatar(sender.getAvatarUrl());
 					}
 
 			Date date = transaction.getDate();

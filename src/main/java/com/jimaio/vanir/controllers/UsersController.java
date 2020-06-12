@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,8 +26,10 @@ import com.jimaio.vanir.response.AuthResponse;
 import com.jimaio.vanir.response.UserBalanceResponse;
 import com.jimaio.vanir.service.TransactionService;
 import com.jimaio.vanir.service.UserService;
+import com.jimaio.vanir.utils.AvatarUtils;
 
 @RestController
+@RequestMapping("/users")
 public class UsersController extends GenericController<User>{
 
 	private static final long serialVersionUID = 7773512516984596478L;
@@ -36,12 +39,15 @@ public class UsersController extends GenericController<User>{
 	
 	@Autowired
 	public TransactionService transactionService;
+	
+	@Autowired
+	public AvatarUtils avatarUtils;
 
 	public UsersController(UserService service) {
 		super(service);
 	}
 	
-	@PostMapping(value = "/users/register", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<AuthResponse> register(@RequestBody RegisterForm registerForm) {
 		
@@ -54,6 +60,7 @@ public class UsersController extends GenericController<User>{
 		user.setPassword(registerForm.getPassword());
 		user.setPhoneNumber(registerForm.getPhoneNumber());
 		user.setApiKey(UUID.randomUUID().toString());
+		user.setAvatarUrl(avatarUtils.generateAvatarUrl());
 		
 		userService.createUser(user);
 		AuthResponse authResponse = new AuthResponse();
@@ -62,7 +69,7 @@ public class UsersController extends GenericController<User>{
 		return ResponseEntity.ok(authResponse);
 	}
 	
-	@PostMapping(value = "/users/login", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<AuthResponse> login(@RequestBody LoginForm loginForm) {
 		
@@ -94,25 +101,25 @@ public class UsersController extends GenericController<User>{
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 	}
 
-	@GetMapping(value = "/users")
+	@GetMapping
 	@ResponseBody
 	public List<User> list() {
 		return userService.getItems();
 	}
 	
-	@GetMapping(value = "/users/{id}")
+	@GetMapping(value = "/{id}")
 	@ResponseBody
 	public User getUser(@PathVariable("id") String apiKey) {
 		return userService.getByApiKey(apiKey);
 	}
 	
-	@DeleteMapping(value = "/users/{id}")
+	@DeleteMapping(value = "/{id}")
 	public void deleteUser(@PathVariable("id") String apiKey) {
 		User user = userService.getByApiKey(apiKey);
 		userService.delete(user);
 	}
 	
-	@GetMapping(value = "/users/balance")
+	@GetMapping(value = "/balance")
 	public ResponseEntity<UserBalanceResponse> getBalance(@RequestHeader("id") String apiKey) {
 		try {
 			User user = userService.getByApiKey(apiKey);
@@ -126,7 +133,7 @@ public class UsersController extends GenericController<User>{
 		}
 	}
 	
-	@PostMapping(value = "/users/balance", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/balance", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<Double> topup(@RequestHeader("id") String apiKey, 
 							 @RequestBody Double value) {
