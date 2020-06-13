@@ -1,13 +1,18 @@
 package com.jimaio.vanir.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.simple.JSONArray;
@@ -24,13 +29,16 @@ public class AvatarUtils {
 		parseJson();
 	}
 	
-	private static void parseJson() {
+	private void parseJson() {
 		JSONParser parser = new JSONParser();
 		ClassLoader classLoader = AvatarUtils.class.getClassLoader();
-		File file = new File(classLoader.getResource("avatarProps.json").getFile());
-
+		InputStream stream = classLoader.getResourceAsStream("avatarProps.json");
+		
 		try {
-			Object obj = parser.parse(new FileReader(file));
+			String result = new BufferedReader(new InputStreamReader(stream))
+					  .lines().collect(Collectors.joining("\n")); 
+			
+			Object obj = parser.parse(result);
 		
 			JSONObject jsonObject = (JSONObject) obj;
 		
@@ -50,6 +58,7 @@ public class AvatarUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("Eroare la deschiderea fisierului json cu props");
 		}
 	}
 	
@@ -66,7 +75,6 @@ public class AvatarUtils {
 			
 			return builder.toString();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

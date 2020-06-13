@@ -24,6 +24,7 @@ import com.jimaio.vanir.request.LoginForm;
 import com.jimaio.vanir.request.RegisterForm;
 import com.jimaio.vanir.response.AuthResponse;
 import com.jimaio.vanir.response.UserBalanceResponse;
+import com.jimaio.vanir.service.EmailService;
 import com.jimaio.vanir.service.TransactionService;
 import com.jimaio.vanir.service.UserService;
 import com.jimaio.vanir.utils.AvatarUtils;
@@ -42,6 +43,9 @@ public class UsersController extends GenericController<User>{
 	
 	@Autowired
 	public AvatarUtils avatarUtils;
+	
+	@Autowired
+	public EmailService emailService;
 
 	public UsersController(UserService service) {
 		super(service);
@@ -63,6 +67,14 @@ public class UsersController extends GenericController<User>{
 		user.setAvatarUrl(avatarUtils.generateAvatarUrl());
 		
 		userService.createUser(user);
+		
+		Thread t = new Thread() {
+			public void run() {
+				emailService.sendWelcomeMail(user);
+			}
+		};
+		t.start();
+		
 		AuthResponse authResponse = new AuthResponse();
 		authResponse.setId(user.getApiKey());
 		

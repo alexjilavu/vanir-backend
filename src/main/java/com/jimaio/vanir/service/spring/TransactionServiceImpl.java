@@ -12,6 +12,7 @@ import com.jimaio.vanir.domain.Transaction;
 import com.jimaio.vanir.domain.User;
 import com.jimaio.vanir.repository.TransactionRepository;
 import com.jimaio.vanir.service.AccountService;
+import com.jimaio.vanir.service.EmailService;
 import com.jimaio.vanir.service.TransactionService;
 import com.jimaio.vanir.service.UserService;
 
@@ -26,6 +27,9 @@ public class TransactionServiceImpl extends GenericServiceImpl<Transaction> impl
 	
 	@Autowired
 	AccountService accountService;
+	
+	@Autowired
+	EmailService emailService;
 
 	@Autowired
 	public TransactionServiceImpl(TransactionRepository transactionRepository) {
@@ -53,9 +57,16 @@ public class TransactionServiceImpl extends GenericServiceImpl<Transaction> impl
 		
 		Boolean ok = accountService.processTransaction(account, transaction);
 		
-		if (ok)
+		if (ok) {
+			Thread t = new Thread() {
+				public void run() {
+					emailService.sendTopupNotification(transaction);
+				}
+			};
+			t.start();
 			return create(transaction);
-		
+		}
+			
 		return null;
 	}
 	
@@ -87,6 +98,13 @@ public class TransactionServiceImpl extends GenericServiceImpl<Transaction> impl
 		
 		if (okSend && okReceived) {
 			create(transaction);
+			Thread t = new Thread() {
+				public void run() {
+					emailService.sendNotificationToRecipient(transaction, recipient);
+					emailService.sendNotificationToSender(transaction, sender);
+				}
+			};
+			t.start();
 			return transaction;
 		}
 		
