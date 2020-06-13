@@ -65,7 +65,7 @@ public class AvatarUtils {
 	public String generateAvatarUrl() {
 		
 		try {
-			URIBuilder builder = new URIBuilder("https://avataaars.io/");
+			URIBuilder builder = new URIBuilder("https://avataaars.io/png/");
 			
 			for (String key : avatarProperties.keySet()) {
 				List<String> propsList = avatarProperties.get(key);
