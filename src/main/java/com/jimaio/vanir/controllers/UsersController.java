@@ -154,6 +154,9 @@ public class UsersController extends GenericController<User>{
 		if (user == null)
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
+		if (value < 0d)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
 		Double balance = null;
 		Transaction transaction = null;
 		try {
