@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jimaio.vanir.domain.User;
 import com.jimaio.vanir.repository.UserRepository;
+import com.jimaio.vanir.service.AccountService;
 import com.jimaio.vanir.service.UserService;
 
 @Service
@@ -15,25 +16,39 @@ public class UserServiceImpl extends GenericServiceImpl<User> implements UserSer
 	UserRepository userRepository;
 	
 	@Autowired
+	AccountService accountService;
+	
+	@Autowired
 	public UserServiceImpl(UserRepository userRepository) {
 		super.setRepository(userRepository);
 		this.userRepository = userRepository;
 	}
 
 	@Override
-	public String checkCredentials(String email, String password) {
+	public User checkCredentials(String email, String password) {
 		User user = userRepository.getByCredentials(email, password);
-		if (user != null && user.getApiKey() != null)
-			return user.getApiKey();
+		if (user != null)
+			return user;
 		return null;
 	}
 
 	@Override
-	public String checkCredentials(String phoneNumber) {
+	public User checkCredentials(String phoneNumber) {
 		User user = userRepository.getByPhoneNumber(phoneNumber);
-		if (user != null && user.getApiKey() != null)
-			return user.getApiKey();
+		if (user != null)
+			return user;
 		return null;
+	}
+
+	@Override
+	public void createUser(User user) {
+		user = create(user);
+		
+		accountService.createAccount(user);
+	}
+	
+	public User getByApiKey(String apiKey) {
+		return userRepository.getByApiKey(apiKey);
 	}
 	
 }

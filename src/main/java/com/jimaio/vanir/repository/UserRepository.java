@@ -8,4 +8,6 @@ public interface UserRepository extends GenericRepository<User>{
 	
 	public User getByCredentials(String email, String password);
 	
+	public User getByApiKey(String apiKey);
+	
 }

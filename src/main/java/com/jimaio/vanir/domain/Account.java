@@ -14,9 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import lombok.Data;
 
@@ -32,12 +34,12 @@ public class Account implements Serializable {
 	@Column(name="ID")
 	protected Long id;
 	
-	@ManyToOne(cascade={}, fetch=FetchType.EAGER, optional=false)
+	@OneToOne(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name="USER_ID", nullable=false, updatable=true, insertable=true)
 	protected User user;
 	
 	@Column(name="BALANCE")
-	protected Integer balance;
+	protected Double balance;
 	
 	@JoinColumn(name="CURRENCY_ID", nullable=false, updatable=true, insertable=true)
 	protected Currency currency;
@@ -46,13 +48,15 @@ public class Account implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	protected Date creationDate;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="account", targetEntity=Card.class, orphanRemoval=true)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="account", targetEntity=Card.class, orphanRemoval=true)
 	protected List<Card> cards;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="recipientAccount", targetEntity=Transaction.class)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="recipientAccount", targetEntity=Transaction.class)
+	@Transient
 	protected List<Transaction> receivedTransactions;
 	
-	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.LAZY, mappedBy="senderAccount", targetEntity=Transaction.class)
+	@OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="senderAccount", targetEntity=Transaction.class)
+	@Transient
 	protected List<Transaction> sentTransactions;
 	
 	public Account() {
