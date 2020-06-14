@@ -30,7 +30,7 @@ public class TransactionControllerIntegrationTests {
 	public void sendTest() {
 		
 		SendTransaction form = new SendTransaction();
-		form.setRecipientId(2);
+		form.setRecipientId("2");
 		form.setValue(-12d);
 		
 		restTemplate.getRestTemplate().setInterceptors(

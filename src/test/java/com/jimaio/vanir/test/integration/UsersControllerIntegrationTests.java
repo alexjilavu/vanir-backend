@@ -1,7 +1,6 @@
 package com.jimaio.vanir.test.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.jimaio.vanir.VanirApplication;
-import com.jimaio.vanir.domain.User;
-import com.jimaio.vanir.request.LoginForm;
 import com.jimaio.vanir.request.RegisterForm;
 import com.jimaio.vanir.response.AuthResponse;
 import com.jimaio.vanir.service.UserService;

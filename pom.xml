@@ -121,6 +121,13 @@
 		    </exclusions>
 		</dependency>
 		
+		<dependency>
+		    <groupId>com.mashape.unirest</groupId>
+		    <artifactId>unirest-java</artifactId>
+		    <version>1.4.9</version>
+		</dependency>
+				
+		
 		<!-- Junit 5 -->
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>

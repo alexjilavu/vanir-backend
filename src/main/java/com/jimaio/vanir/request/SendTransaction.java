@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class SendTransaction {
 
-	public Integer recipientId;
+	public String recipientId;
 	public Double value;
 	
 }

@@ -97,13 +97,15 @@ public class TransactionsController extends GenericController<Transaction> {
 	
 	@PostMapping(value = "/send", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Transaction send(@RequestHeader("userId") Integer id, 
+	public Transaction send(@RequestHeader("userId") String id, 
 							@RequestBody SendTransaction body) {
 		double value = body.getValue();
 		if (value <= 0)
 			return null;
+		User recipient = userService.getByApiKey(body.getRecipientId());
+		User sender = userService.getByApiKey(id);
 		
-		Transaction transaction = transactionService.send(id, body.recipientId, body.value);
+		Transaction transaction = transactionService.send(sender.getId().intValue(), recipient.getId().intValue(), body.getValue());
 		return transaction;
 	}
 
