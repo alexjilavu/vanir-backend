@@ -2,6 +2,7 @@
 
 ## Descriere
 Vanir este o aplicatie de mobile banking care permite utilizatorilor sa faca tranzactii usor si sigur. Aplicatia noastra permite incarcarea contului cu credit printr-o tranzactie cu un cont extern, istoricul tuturor tranzactiilor, analytics si punctul forte fiind tranzactiile intre utilizatorii aplicatiei care se realizeaza foarte usor prin scanarea unui cod QR.
+In acest [link](https://www.youtube.com/watch?v=ky_Wi8Ko2lM&feature=youtu.be&fbclid=IwAR16hNKpcHUh5vZIgVCumjw_YopmTwm_kXSpMFYeVysQR58zZeB1FexuQlo&ab_channel=Vanir) puteti gasi prezentarea aplicatiei.
 
 ## User stories
 
